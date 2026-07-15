@@ -1,6 +1,6 @@
 import { useMemo } from 'react'
 import Reveal from './Reveal.jsx'
-import { detectOS, PLATFORMS } from '../lib/platform.js'
+import { detectOS, PLATFORMS, downloadUrl, useLatestRelease } from '../lib/platform.js'
 import { AppleIcon, WindowsIcon, LinuxIcon, DownloadIcon } from './icons.jsx'
 
 const ORDER = ['mac', 'windows', 'linux']
@@ -8,6 +8,8 @@ const ICON = { mac: AppleIcon, windows: WindowsIcon, linux: LinuxIcon }
 
 export default function Download() {
   const os = useMemo(() => detectOS(), [])
+  const release = useLatestRelease()
+  const version = release?.version || '1.0.0'
 
   return (
     <section className="section download" id="download">
@@ -18,8 +20,8 @@ export default function Download() {
             <span className="eyebrow">Get Audiobooks</span>
             <h2>Pick your platform and start listening.</h2>
             <p>
-              Version 1.4.0 · free and open source. Every build is identical —
-              your library comes with you across machines.
+              Version {version} · free and open source. Always the latest release,
+              straight from GitHub.
             </p>
           </Reveal>
         </div>
@@ -44,7 +46,7 @@ export default function Download() {
                 <p className="dl-detail">{p.detail}</p>
                 <a
                   className={`btn ${recommended ? 'btn-primary' : 'btn-ghost'} dl-btn`}
-                  href={`#download-${key}`}
+                  href={downloadUrl(key, release)}
                 >
                   <DownloadIcon width="18" height="18" />
                   Download

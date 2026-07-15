@@ -1,6 +1,6 @@
 import { motion } from 'framer-motion'
 import { useMemo } from 'react'
-import { detectOS, PLATFORMS } from '../lib/platform.js'
+import { detectOS, PLATFORMS, downloadUrl, useLatestRelease } from '../lib/platform.js'
 import { DownloadIcon } from './icons.jsx'
 
 const ease = [0.2, 0.75, 0.2, 1]
@@ -8,6 +8,7 @@ const ease = [0.2, 0.75, 0.2, 1]
 export default function Hero() {
   const os = useMemo(() => detectOS(), [])
   const plat = PLATFORMS[os]
+  const release = useLatestRelease()
 
   const container = {
     hidden: {},
@@ -41,7 +42,7 @@ export default function Hero() {
           </motion.p>
 
           <motion.div className="hero-cta" variants={item}>
-            <a href="#download" className="btn btn-primary">
+            <a href={downloadUrl(os, release)} className="btn btn-primary">
               <DownloadIcon width="18" height="18" />
               Download for {plat.name}
             </a>
